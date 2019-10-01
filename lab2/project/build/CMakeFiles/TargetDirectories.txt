@@ -1,0 +1,9 @@
+/home/vladimirg/university/parallel/lab2/project/build/CMakeFiles/install.dir
+/home/vladimirg/university/parallel/lab2/project/build/CMakeFiles/list_install_components.dir
+/home/vladimirg/university/parallel/lab2/project/build/CMakeFiles/rebuild_cache.dir
+/home/vladimirg/university/parallel/lab2/project/build/CMakeFiles/edit_cache.dir
+/home/vladimirg/university/parallel/lab2/project/build/CMakeFiles/package_source.dir
+/home/vladimirg/university/parallel/lab2/project/build/CMakeFiles/package.dir
+/home/vladimirg/university/parallel/lab2/project/build/CMakeFiles/install/strip.dir
+/home/vladimirg/university/parallel/lab2/project/build/CMakeFiles/install/local.dir
+/home/vladimirg/university/parallel/lab2/project/build/CMakeFiles/lab2-par.dir

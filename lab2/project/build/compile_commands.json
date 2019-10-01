@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/vladimirg/university/parallel/lab2/project/build",
+  "command": "/usr/bin/gcc  -I/home/vladimirg/university/parallel/lab2/FW_1.2_ALL/FW_1.2_Lin64    -m64 -g -Wall -Werror -o CMakeFiles/lab2-par.dir/main.c.o   -c /home/vladimirg/university/parallel/lab2/project/main.c",
+  "file": "/home/vladimirg/university/parallel/lab2/project/main.c"
+}
+]

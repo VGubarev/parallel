@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/vladimirg/university/parallel/lab2/FW_1.2_ALL/FW_1.2_Lin64/fwBase.h
+
+/home/vladimirg/university/parallel/lab2/FW_1.2_ALL/FW_1.2_Lin64/fwSignal.h
+fwBase.h
+/home/vladimirg/university/parallel/lab2/FW_1.2_ALL/FW_1.2_Lin64/fwBase.h
+
+/home/vladimirg/university/parallel/lab2/project/main.c
+fwBase.h
+/home/vladimirg/university/parallel/lab2/project/fwBase.h
+fwSignal.h
+/home/vladimirg/university/parallel/lab2/project/fwSignal.h
+float.h
+-
+math.h
+-
+stdio.h
+-
+stdlib.h
+-
+sys/time.h
+-
+

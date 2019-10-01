@@ -1,0 +1,1 @@
+/usr/bin/gcc    CMakeFiles/lab2-par.dir/main.c.o  -o lab2-par  -L/home/vladimirg/university/parallel/lab2/FW_1.2_ALL/FW_1.2_Lin64/lib -Wl,-rpath,/home/vladimirg/university/parallel/lab2/FW_1.2_ALL/FW_1.2_Lin64/lib -lm -lfwBase -lfwSignal 

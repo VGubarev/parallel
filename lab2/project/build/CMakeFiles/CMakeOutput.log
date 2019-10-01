@@ -1,0 +1,31 @@
+The system is: Linux - shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+3.10.0-957.el7.x86_64 - shell-init: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory
+x86_64
+Determining if the C compiler works passed with the following output:
+Change Dir: /home/vladimirg/university/parallel/lab2/project/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/bin/gmake cmTC_11799/fast 
+/bin/gmake -f CMakeFiles/cmTC_11799.dir/build.make CMakeFiles/cmTC_11799.dir/build
+gmake[1]: Entering directory `/home/vladimirg/university/parallel/lab2/project/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_11799.dir/testCCompiler.c.o
+/usr/bin/gcc    -o CMakeFiles/cmTC_11799.dir/testCCompiler.c.o   -c /home/vladimirg/university/parallel/lab2/project/build/CMakeFiles/CMakeTmp/testCCompiler.c
+Linking C executable cmTC_11799
+/usr/bin/cmake3 -E cmake_link_script CMakeFiles/cmTC_11799.dir/link.txt --verbose=1
+/usr/bin/gcc      CMakeFiles/cmTC_11799.dir/testCCompiler.c.o  -o cmTC_11799 
+gmake[1]: Leaving directory `/home/vladimirg/university/parallel/lab2/project/build/CMakeFiles/CMakeTmp'
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: /home/vladimirg/university/parallel/lab2/project/build/CMakeFiles/CMakeTmp
+
+Run Build Command(s):/bin/gmake cmTC_01f72/fast 
+/bin/gmake -f CMakeFiles/cmTC_01f72.dir/build.make CMakeFiles/cmTC_01f72.dir/build
+gmake[1]: Entering directory `/home/vladimirg/university/parallel/lab2/project/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_01f72.dir/CMakeCCompilerABI.c.o
+/usr/bin/gcc    -o CMakeFiles/cmTC_01f72.dir/CMakeCCompilerABI.c.o   -c /usr/share/cmake3/Modules/CMakeCCompilerABI.c
+Linking C executable cmTC_01f72
+/usr/bin/cmake3 -E cmake_link_script CMakeFiles/cmTC_01f72.dir/link.txt --verbose=1
+/usr/bin/gcc      CMakeFiles/cmTC_01f72.dir/CMakeCCompilerABI.c.o  -o cmTC_01f72 
+gmake[1]: Leaving directory `/home/vladimirg/university/parallel/lab2/project/build/CMakeFiles/CMakeTmp'
+
+
