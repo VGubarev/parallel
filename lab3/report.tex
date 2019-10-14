@@ -1,0 +1,638 @@
+\documentclass[a4paper,14pt,russian]{extarticle}
+
+\usepackage{extsizes}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel}
+\usepackage{pscyr} % Русские шрифты
+\usepackage{indentfirst} % отделять первую строку раздела абзацным отступом тоже
+\renewcommand{\rmdefault}{ftm} % Times New Roman
+
+\usepackage[usenames,dvipsnames]{color} % названия цветов
+
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{syntax}
+\usepackage{listings}
+\lstset{language=C++,
+	basicstyle=\ttfamily\small,
+	keywordstyle=\color{blue}\ttfamily,
+	stringstyle=\color{red}\ttfamily,
+	commentstyle=\color{green}\ttfamily,
+	morecomment=[l][\color{magenta}]{\#}
+}
+
+\usepackage{titlesec}
+
+\titleformat{\section}
+{\normalsize\bfseries}
+{\thesection}
+{1em}{}
+
+\titleformat{\subsection}
+{\normalsize\bfseries}
+{\thesubsection}
+{1em}{}
+
+
+\usepackage{tocloft}
+\renewcommand{\cfttoctitlefont}{\hspace{0.38\textwidth} \bfseries\MakeUppercase}
+\renewcommand{\cftbeforetoctitleskip}{1em}
+\renewcommand{\cftaftertoctitle}{\mbox{}\hfill \\ \mbox{}\hfill{\footnotesize Стр.}\vspace{0em}}
+\renewcommand{\cftsecfont}{\hspace{31pt}}
+\renewcommand{\cftsubsecfont}{\hspace{11pt}}
+\renewcommand{\cftparskip}{-1mm}
+\renewcommand{\cftdotsep}{1}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}} 
+\setcounter{tocdepth}{2} % задать глубину оглавления — до subsection включительно
+
+\usepackage{adjustbox}
+
+\usepackage[tableposition=top]{caption}
+\usepackage{subcaption}
+\DeclareCaptionLabelFormat{gostfigure}{Рисунок #2}
+\DeclareCaptionLabelFormat{gosttable}{Таблица #2}
+\DeclareCaptionLabelSeparator{gost}{~---~}
+\captionsetup{labelsep=gost}
+\captionsetup[figure]{labelformat=gostfigure}
+\captionsetup[table]{labelformat=gosttable,justification=justified, singlelinecheck=off}
+\renewcommand{\thesubfigure}{\asbuk{subfigure}}
+
+\usepackage{needspace}
+
+\usepackage{svg}
+
+\begin{document}
+\thispagestyle{empty}
+\begin{center}
+	{\large
+		Университет ИТМО \\
+		Факультет программной инженерии и компьютерной техники
+	}
+\end{center}
+\vspace{\stretch{2}}
+\begin{center}
+	{\large
+		Параллельные вычисления\\
+	}
+	\it{
+		Лабораторная работа №3
+	}
+\end{center}
+\vspace{\stretch{6}}
+
+\begin{table}[h]
+	\begin{flushright}
+		\begin{tabular}{l}
+			Выполнил:\\ 
+			студент группы P42111\\ 
+			\it Губарев В.Ю.
+		\end{tabular} 
+	\end{flushright}	
+\end{table}
+
+\vspace{\stretch{4}}
+\begin{center}
+	2019, г. Санкт-Петербург
+\end{center}
+\newpage
+
+\tableofcontents
+
+\newpage
+
+
+\section{Задание}
+
+
+На компьютере с многоядерным процессором установить ОС Linux
+и компилятор GCC версии не ниже 4.7.2. При невозможности установить Linux или отсутствии компьютера с многоядерным процессором можно выполнять лабораторную работу на виртуальной машине.
+
+Скомпилировать написанную программу, используя встроенное в
+gcc средство автоматического распараллеливания Graphite с помощью следующей команды “/home/user/gcc -O2 -Wall -Werror -floopparallelize-all -ftree-parallelize-loops=K lab1.c -o lab1-par-K” (переменной K поочерёдно присвоить хотя бы 4 различных целых значений, выбор обосновать).\\
+
+Индивидуальное задание:
+\begin{table}[h]
+	\begin{tabular}{|l|l|l|}
+		\hline
+		Губарев&Владимир&Юрьевич \\\hline
+		7&8&7 \\\hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[h]
+	\begin{tabular}{|l|l|l|}
+		\hline
+		A &	392&	 \\\hline
+		B&	вариант&	Задание\\\hline
+		7&	3&	Гиперболический тангенс с последующим уменьшением на 1\\\hline
+		8&	1&	Модуль синуса (т.е. M2[i] = |sin(M2[i] + M[i1])|)\\\hline
+		6&	5&	Выбор меньшего\\\hline
+		7&	3&	Пирамидальная сортировка (сортировка кучи, Heapsort)\\\hline
+	\end{tabular}
+\end{table}
+
+
+\section{Аппаратная и программная конфигурация}
+
+
+Процессор:
+\begin{lstlisting}
+CPU(s):                40
+On-line CPU(s) list:   0-19
+Off-line CPU(s) list:  20-39
+Thread(s) per core:    1
+Core(s) per socket:    10
+Socket(s):             2
+NUMA node(s):          2
+Vendor ID:             GenuineIntel
+CPU family:            6
+Model:                 63
+Model name:            Intel(R) Xeon(R) CPU E5-2676v3 @ 2.40GHz
+\end{lstlisting}
+
+RAM:
+\begin{verbatim}
+160GiB DDR4
+\end{verbatim}
+
+Использованные компиляторы:
+\begin{lstlisting}
+[17/09/2019-10:36:16] ~/university/parallel/lab1/project
+vladimirg@ip-10-230-0-33|tb> /opt/gcc-8.2.0/bin/gcc --version
+gcc (GCC) 8.2.0
+
+[17/09/2019-10:36:22] ~/university/parallel/lab1/project
+vladimirg@ip-10-230-0-33|tb> /opt/llvm-8/bin/clang --version
+clang version 8.0.0 (tags/RELEASE_800/final)
+
+[17/09/2019-12:36:22] ~/
+./intel/system_studio_2019/bin/icc --version
+icc (ICC) 19.0.4.235 20190416
+Copyright (C) 1985-2019 Intel Corporation.  All rights reserved.
+\end{lstlisting}
+
+
+\section{Исходный код}
+
+
+\begin{lstlisting}
+#include <float.h>
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/time.h>
+
+const static int c_a = 392;
+const static int c_experiments = 50;
+
+void generate(unsigned int seed, double * p, unsigned int N, unsigned int min, unsigned int max)
+{
+    unsigned int i;
+    for (i = 0; i < N; i++) {
+        p[i] = (rand_r(&seed) % max) + min;
+    }
+}
+
+void lab_swap(double * lhs, double * rhs)
+{
+    double tmp = *lhs;
+    *lhs = *rhs;
+    *rhs = tmp;
+}
+
+// To heapify a subtree rooted with node i which is 
+// an index in arr[]. n is size of heap 
+void heapify(double * arr, unsigned int n, unsigned int i)
+{ 
+    unsigned int largest = i; // Initialize largest as root
+    unsigned int l = 2*i + 1; // left = 2*i + 1
+    unsigned int r = 2*i + 2; // right = 2*i + 2
+  
+    // If left child is larger than root 
+    if (l < n && arr[l] > arr[largest]) {
+        largest = l;
+    }
+
+    // If right child is larger than largest so far 
+    if (r < n && arr[r] > arr[largest]) {
+        largest = r;
+    }
+
+    // If largest is not root 
+    if (largest != i) {
+        lab_swap(&arr[i], &arr[largest]);
+        heapify(arr, n, largest);
+    } 
+} 
+  
+void heapsort(double * arr, int n) 
+{ 
+    // Build heap (rearrange array)
+    int i;
+    for (i = n / 2 - 1; i >= 0; i--) {
+        heapify(arr, n, i);
+    }
+
+    // One by one extract an element from heap
+    for (i=n-1; i>=0; i--) { 
+        // Move current root to end
+        lab_swap(&arr[0], &arr[i]);
+        // call max heapify on the reduced heap
+        heapify(arr, i, 0);
+    }
+}
+
+double lab_abs(double v)
+{
+    if (v < 0) {
+        return -v;
+    }
+    return v;
+}
+
+double lab_min(double lhs, double rhs)
+{
+    return lhs > rhs ? rhs : lhs;
+}
+
+void print_array(double * p, unsigned int N)
+{
+    unsigned int i = 0;
+    for (i = 0; i < N - 1; i++) {
+        printf("%f ", p[i]);
+    }
+    printf("%f\n", p[N - 1]);
+}
+
+int main(int argc, char * argv[])
+{
+    if (argc < 2) {
+        return -1;
+    }
+
+    struct timeval begin, end;
+    const int N = atoi(argv[1]);
+    if (N < 0) {
+        return -2;
+    }
+
+    double * m1 = malloc(sizeof(double) * N);
+    double * m2 = malloc(sizeof(double) * N / 2);
+
+    gettimeofday(&begin, NULL);
+    double reduced_sum = 0.0;
+    unsigned int i;
+    for (i = 0; i < c_experiments; i++) {
+        // 1. Generate: M1 of N elements, M2 of N/2 elements
+        generate(i, m1, N, 1, c_a);
+        //    puts("M1");
+        //    print_array(m1, N);
+        generate(i, m2, N / 2, c_a, 10 * c_a);
+        //    puts("M2");
+        //    print_array(m2, N / 2);
+        // 2. Map: tanh(M1[j]) - 1 , j e N ; M2[j] = abs(sin(M2[j] + M2[j-1])) , j e N/2
+        unsigned int j;
+        for (j = 0; j < N; j++) {
+            m1[j] = tanh(m1[j]) - 1;
+        }
+        //    puts("M1 tanh");
+        //    print_array(m1, N);
+        m2[0] = lab_abs(sin(m2[0] /* + 0.0 */));
+        for (j = 1; j < N / 2; j++) {
+            m2[j] = lab_abs(sin(m2[j] + m2[j - 1]));
+        }
+        //    puts("M2 abs sin sum");
+        //    print_array(m2, N / 2);
+        // 3. Merge: M2[j] = min(M1[j], M2[j]) , j e N/2
+        for (j = 0; j < N / 2; j++) {
+            m2[j] = lab_min(m1[j], m2[j]);
+        }
+        //    puts("min of M1 M2");
+        //    print_array(m2, N / 2);
+        // 4. Sort: heapsort(M2, N/2)
+        heapsort(m2, N/2);
+        //    puts("sorted");
+        //    print_array(m2, N / 2);
+        // 5. Reduce: 1. min_non_zero(M2)
+        //            2. if (((long)(M2[i] / min_non_zero)) & ~(1))
+        //                   sum += sin(M2[i])
+        double min_non_zero = DBL_MAX;
+        for (j = 0; j < N / 2; j++) {
+            if (m2[j] != 0) {
+                min_non_zero = lab_min(min_non_zero, m2[j]);
+            }
+        }
+        //    printf("Min non zero: %f\n", min_non_zero);
+        for (j = 0; j < N / 2; j++) {
+            if (((long)(m2[i] / min_non_zero)) & ~(1)) {
+                reduced_sum += sin(m2[j]);
+            }
+        }
+        //    printf("Sum: %e\n", reduced_sum);
+    }
+    gettimeofday(&end, NULL);
+    long delta_ms = 1000 * (end.tv_sec - begin.tv_sec) + (end.tv_usec - begin.tv_usec) / 1000;
+    printf("N = %d. Milliseconds passed: %ld\n", N, delta_ms);
+    printf("N = %d. X=%e\n", N, reduced_sum / c_experiments);
+
+    return 0;
+}
+
+\end{lstlisting}
+
+\newpage
+
+
+\section{Результаты проведения экспериментов}
+
+\subsection{GCC}
+
+Использованные флаги компиляции:
+\begin{lstlisting}
+-O3 -floop-parallelize-all -ftree-parallelize-loops=${THREADS}
+\end{lstlisting}
+
+
+\begin{table}[h]
+	\caption{Последовательное выполнение}
+	\label{gcc-seq}
+	\begin{adjustbox}{width=\textwidth,nofloat=table}
+			\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|}
+				\hline
+				& N1   & N1+1  & N1+2   & N1+3   & N1+4   & N1+5   & N1+6   & N1+7   & N1+8   & N1+9   & N2     \\\hline
+				N      & 1750 & 71775 & 141800 & 211825 & 281850 & 351875 & 421900 & 491925 & 561950 & 631975 & 702000 \\\hline
+				seq(N), мс & 10   & 236   & 435    & 628    & 823    & 1008   & 1210   & 1397   & 1598   & 1791   & 2003   \\\hline
+				X      & 0    & 0     & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0 \\\hline
+			\end{tabular}
+	\end{adjustbox}
+\end{table}
+
+\begin{table}[h]
+	\caption{Выполнение при 2 потоках}
+	\label{gcc-2}
+	\begin{adjustbox}{width=\textwidth,nofloat=table}
+	\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|}
+		\hline
+		& N1   & N1+1  & N1+2   & N1+3   & N1+4   & N1+5   & N1+6   & N1+7   & N1+8   & N1+9   & N2     \\\hline
+		N        & 1750        & 71775       & 141800      & 211825      & 281850      & 351875     & 421900      & 491925      & 561950      & 631975      & 702000      \\ \hline
+		par-2(N) & 9           & 224         & 374         & 572         & 759         & 941        & 1105        & 1310        & 1475        & 1702        & 1896        \\ \hline
+		X        & 0           & 0           & 0           & 0           & 0           & 0          & 0           & 0           & 0           & 0           & 0           \\ \hline
+		S(2)  & 1,111 & 1,054 & 1,163  & 1,098  & 1,084  & 1,071  & 1,095  & 1,066  & 1,083  & 1,052  & 1,056  \\ \hline
+	\end{tabular}
+	\end{adjustbox}
+\end{table}
+
+\begin{table}[h]
+	\caption{Выполнение при 4 потоках}
+	\label{gcc-4}
+	\begin{adjustbox}{width=\textwidth,nofloat=table}
+		\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|}
+			\hline
+			         & N1    & N1+d  & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N2     \\ \hline
+			N        & 1750  & 71775 & 141800 & 211825 & 281850 & 351875 & 421900 & 491925 & 561950 & 631975 & 702000 \\ \hline
+			par-4(N) & 9     & 217   & 366    & 559    & 731    & 913    & 1082   & 1309   & 1445   & 1611   & 1790   \\ \hline
+			X        & 0     & 0     & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      \\ \hline
+			S(4)  & 1,111 & 1,088 & 1,189  & 1,123  & 1,126  & 1,104  & 1,118  & 1,067  & 1,106  & 1,112  & 1,119  \\ \hline
+		\end{tabular}
+	\end{adjustbox}
+\end{table}
+
+\begin{table}[h]
+	\caption{Выполнение при 8 потоках}
+	\label{gcc-8}
+	\begin{adjustbox}{width=\textwidth,nofloat=table}
+		\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|}
+			\hline
+	         & N1   & N1+d  & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N2     \\ \hline
+	N        & 1750 & 71775 & 141800 & 211825 & 281850 & 351875 & 421900 & 491925 & 561950 & 631975 & 702000 \\ \hline
+	par-8(N) & 10   & 217   & 363    & 538    & 715    & 908    & 1069   & 1242   & 1427   & 1595   & 1787   \\ \hline
+	X        & 0    & 0     & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      \\ \hline
+	speedup  & 1    & 1,088 & 1,198  & 1,167  & 1,151  & 1,11   & 1,132  & 1,125  & 1,12   & 1,123  & 1,121  \\ \hline
+		\end{tabular}
+	\end{adjustbox}
+\end{table}
+
+
+\begin{table}[h]
+	\caption{Выполнение при 16 потоках}
+	\label{gcc-16}
+	\begin{adjustbox}{width=\textwidth,nofloat=table}
+		\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|}
+			\hline
+			& N1   & N1+d  & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N2     \\ \hline
+			N         & 1750 & 71775 & 141800 & 211825 & 281850 & 351875 & 421900 & 491925 & 561950 & 631975 & 702000 \\ \hline
+			par-16(N) & 10   & 219   & 360    & 535    & 711    & 927    & 1062   & 1276   & 1410   & 1594   & 1766   \\ \hline
+			X         & 0    & 0     & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      \\ \hline
+			S(16)   & 1    & 1,078 & 1,208  & 1,174  & 1,158  & 1,087  & 1,139  & 1,095  & 1,133  & 1,124  & 1,134  \\ \hline
+		\end{tabular}
+	\end{adjustbox}
+\end{table}
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{gcc}
+	\caption{Время выполнения полезной нагрузки программы от N, программы, скомпилированной GCC}
+	\label{pic:gcc}
+\end{figure}
+
+
+\subsection{Clang}
+
+Выполнение настоящего пункта требует сборки и установки LLVM Polly.\\
+
+Использованные флаги компиляции:
+\begin{lstlisting}
+-O3 -mllvm -polly -mllvm -polly-parallel -mllvm
+-polly-num-threads=${THREADS}
+\end{lstlisting}
+
+\begin{table}[H]
+	\caption{Последовательное выполнение}
+	\label{clang-seq}
+	\begin{adjustbox}{width=\textwidth,nofloat=table}
+		\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|}
+			\hline
+			& N1   & N1+1  & N1+2   & N1+3   & N1+4   & N1+5   & N1+6   & N1+7   & N1+8   & N1+9   & N2     \\\hline
+N       & 1750  & 71775 & 141800 & 211825 & 281850 & 351875 & 421900 & 491925 & 561950 & 631975 & 702000 \\ \hline
+seq(N)  & 10    & 234   & 420    & 573    & 764    & 1003   & 1190   & 1336   & 1557   & 1770   & 1924   \\ \hline
+X       & 0     & 0     & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      \\ \hline
+		\end{tabular}
+	\end{adjustbox}
+\end{table}
+
+\begin{table}[H]
+	\caption{Выполнение при 2 потоках}
+	\label{clang-2}
+	\begin{adjustbox}{width=\textwidth,nofloat=table}
+		\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|}
+			\hline
+			& N1   & N1+1  & N1+2   & N1+3   & N1+4   & N1+5   & N1+6   & N1+7   & N1+8   & N1+9   & N2     \\\hline
+N        & 1750  & 71775 & 141800 & 211825 & 281850 & 351875 & 421900 & 491925 & 561950 & 631975 & 702000 \\ \hline
+par-2(N) & 9     & 233   & 422    & 572    & 806    & 998    & 1194   & 1376   & 1570   & 1769   & 1952   \\ \hline
+X        & 0     & 0     & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      \\ \hline
+speedup  & 1,111 & 1,004 & 0,995  & 1,002  & 0,948  & 1,005  & 0,997  & 0,971  & 0,992  & 1,001  & 0,986  \\ \hline
+		\end{tabular}
+	\end{adjustbox}
+\end{table}
+
+\begin{table}[H]
+	\caption{Выполнение при 4 потоках}
+	\label{clang-4}
+	\begin{adjustbox}{width=\textwidth,nofloat=table}
+		\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|}
+			\hline
+			& N1    & N1+d  & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N2     \\ \hline
+N        & 1750  & 71775 & 141800 & 211825 & 281850 & 351875 & 421900 & 491925 & 561950 & 631975 & 702000 \\ \hline
+par-4(N) & 9     & 230   & 427    & 571    & 806    & 994    & 1184   & 1364   & 1558   & 1749   & 1964   \\ \hline
+X        & 0     & 0     & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      \\ \hline
+speedup  & 1,111 & 1,017 & 0,984  & 1,004  & 0,948  & 1,009  & 1,005  & 0,979  & 0,999  & 1,012  & 0,98   \\ \hline
+		\end{tabular}
+	\end{adjustbox}
+\end{table}
+
+\begin{table}[H]
+	\caption{Выполнение при 8 потоках}
+	\label{clang-8}
+	\begin{adjustbox}{width=\textwidth,nofloat=table}
+		\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|}
+			\hline
+			& N1   & N1+d  & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N2     \\ \hline
+N        & 1750  & 71775 & 141800 & 211825 & 281850 & 351875 & 421900 & 491925 & 561950 & 631975 & 702000 \\ \hline
+par-8(N) & 9     & 231   & 427    & 569    & 760    & 951    & 1188   & 1377   & 1570   & 1766   & 1947   \\ \hline
+X        & 0     & 0     & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      \\ \hline
+speedup  & 1,111 & 1,013 & 0,984  & 1,007  & 1,005  & 1,055  & 1,002  & 0,97   & 0,992  & 1,002  & 0,988  \\ \hline
+		\end{tabular}
+	\end{adjustbox}
+\end{table}
+
+\begin{table}[H]
+	\caption{Выполнение при 16 потоках}
+	\label{clang-16}
+	\begin{adjustbox}{width=\textwidth,nofloat=table}
+		\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|}
+			\hline
+			& N1   & N1+d  & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N2     \\ \hline
+N         & 1750  & 71775 & 141800 & 211825 & 281850 & 351875 & 421900 & 491925 & 561950 & 631975 & 702000 \\ \hline
+par-16(N) & 9     & 231   & 428    & 570    & 799    & 996    & 1208   & 1374   & 1574   & 1764   & 1955   \\ \hline
+X         & 0     & 0     & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      \\ \hline
+speedup   & 1,111 & 1,013 & 0,981  & 1,005  & 0,956  & 1,007  & 0,985  & 0,972  & 0,989  & 1,003  & 0,984  \\ \hline
+		\end{tabular}
+	\end{adjustbox}
+\end{table}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{clang}
+	\caption{Время выполнения полезной нагрузки программы от N, программы, скомпилированной Clang}
+	\label{pic:clang}
+\end{figure}
+
+
+\subsection{ICC}
+
+Использованные флаги компиляции:
+\begin{lstlisting}
+-O3 -parallel -par-threshold=${THREADS}
+\end{lstlisting}
+
+
+\begin{table}[H]
+	\caption{Последовательное выполнение}
+	\label{icc-seq}
+	\begin{adjustbox}{width=\textwidth,nofloat=table}
+		\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|}
+			\hline
+			& N1   & N1+1  & N1+2   & N1+3   & N1+4   & N1+5   & N1+6   & N1+7   & N1+8   & N1+9   & N2     \\\hline
+N       & 1750 & 71775 & 141800 & 211825 & 281850 & 351875 & 421900 & 491925 & 561950 & 631975 & 702000 \\ \hline
+seq(N)  & 7    & 206   & 377    & 545    & 724    & 890    & 1063   & 1192   & 1416   & 1589   & 1765   \\ \hline
+X       & 0    & 0     & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      \\ \hline
+speedup & 1    & 1,078 & 1,208  & 1,174  & 1,158  & 1,087  & 1,139  & 1,095  & 1,133  & 1,124  & 1,134  \\ \hline
+		\end{tabular}
+	\end{adjustbox}
+\end{table}
+
+\begin{table}[H]
+	\caption{Выполнение при 2 потоках}
+	\label{icc-2}
+	\begin{adjustbox}{width=\textwidth,nofloat=table}
+		\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|}
+			\hline
+			& N1   & N1+1  & N1+2   & N1+3   & N1+4   & N1+5   & N1+6   & N1+7   & N1+8   & N1+9   & N2     \\\hline
+N        & 1750  & 71775 & 141800 & 211825 & 281850 & 351875 & 421900 & 491925 & 561950 & 631975 & 702000 \\ \hline
+par-2(N) & 44    & 184   & 540    & 446    & 604    & 751    & 901    & 1096   & 1248   & 1419   & 1602   \\ \hline
+X        & 0     & 0     & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      \\ \hline
+speedup  & 0,159 & 1,12  & 0,698  & 1,222  & 1,199  & 1,185  & 1,18   & 1,088  & 1,135  & 1,12   & 1,102  \\ \hline
+		\end{tabular}
+	\end{adjustbox}
+\end{table}
+
+\begin{table}[H]
+	\caption{Выполнение при 4 потоках}
+	\label{icc-4}
+	\begin{adjustbox}{width=\textwidth,nofloat=table}
+		\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|}
+			\hline
+			& N1    & N1+d  & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N2     \\ \hline
+N        & 1750  & 71775 & 141800 & 211825 & 281850 & 351875 & 421900 & 491925 & 561950 & 631975 & 702000 \\ \hline
+par-4(N) & 16    & 187   & 295    & 450    & 603    & 753    & 900    & 1101   & 1257   & 1395   & 1552   \\ \hline
+X        & 0     & 0     & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      \\ \hline
+speedup  & 0,438 & 1,102 & 1,278  & 1,211  & 1,201  & 1,182  & 1,181  & 1,083  & 1,126  & 1,139  & 1,137  \\ \hline
+		\end{tabular}
+	\end{adjustbox}
+\end{table}
+
+\begin{table}[H]
+	\caption{Выполнение при 8 потоках}
+	\label{icc-8}
+	\begin{adjustbox}{width=\textwidth,nofloat=table}
+		\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|}
+			\hline
+			& N1   & N1+d  & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N2     \\ \hline
+N        & 1750  & 71775 & 141800 & 211825 & 281850 & 351875 & 421900 & 491925 & 561950 & 631975 & 702000 \\ \hline
+par-8(N) & 16    & 178   & 298    & 453    & 597    & 765    & 911    & 1093   & 1230   & 1407   & 1582   \\ \hline
+X        & 0     & 0     & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      \\ \hline
+speedup  & 0,438 & 1,157 & 1,265  & 1,203  & 1,213  & 1,163  & 1,167  & 1,091  & 1,151  & 1,129  & 1,116  \\ \hline
+		\end{tabular}
+	\end{adjustbox}
+\end{table}
+
+\begin{table}[H]
+	\caption{Выполнение при 16 потоках}
+	\label{icc-16}
+	\begin{adjustbox}{width=\textwidth,nofloat=table}
+		\begin{tabular}{|l|l|l|l|l|l|l|l|l|l|l|l|}
+			\hline
+			& N1   & N1+d  & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N1+d   & N2     \\ \hline
+N         & 1750  & 71775 & 141800 & 211825 & 281850 & 351875 & 421900 & 491925 & 561950 & 631975 & 702000 \\ \hline
+par-16(N) & 18    & 193   & 296    & 458    & 600    & 768    & 910    & 1082   & 1258   & 1397   & 1578   \\ \hline
+X         & 0     & 0     & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      & 0      \\ \hline
+speedup   & 0,389 & 1,067 & 1,274  & 1,19   & 1,207  & 1,159  & 1,168  & 1,102  & 1,126  & 1,137  & 1,119  \\ \hline
+		\end{tabular}
+	\end{adjustbox}
+\end{table}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{icc}
+	\caption{Время выполнения полезной нагрузки программы от N программы, скомпилированной ICC}
+	\label{pic:icc}
+\end{figure}
+
+
+\section{Выводы о проведенных экспериментах}
+
+На основании проведенных экспериментов можно сделать следующие выводы:
+\begin{enumerate}
+	\item GCC и ICC показывают существенный эффект от использования средств автоматического распараллеливания программы (в пределах 15\%).
+	\item ICC показывает значительное преимущество над GCC по времени выполнения полезной нагрузки программы во всех исследованных конфигурациях, включая однопоточное исполнение заданного алгоритма.
+	\item Единственным исключением из пункта выше можно назвать выполнение программы при N=N1. При этих входных данных GCC показывает себя лучше ICC. Наиболее разумным объяснением такого поведения может являться момент, в который создаются потоки для последующего параллельного выполнения цикла. А именно, делается ли это в начале работы программы (до взятия времени начала работы алгоритма) или после. Во втором случае в результирующее время будет включены временные затраты на создание потоков.
+	\item Согласно отладочной информации процесса автоматического распараллеливания GCC, эффект был достигнут за счет распараллеливания цикла выбора минимального значения среди массива M2 и первой половины массива M1.
+	\item Связка инструментальных средств Clang + Polly + LLVM не показала какого- либо эффекта от своего использования. Согласно отладочной информации процесса автоматического распараллеливания, Polly не удалось найти ни одного подходящего для этих улучшений цикла.
+	\item Согласно strace, ICC создавал не более 3 потоков дополнительно (+1 главный поток), в то время, как общее число потоков в GCC было равно запрашиваемому (2, 4, 8, 16, соответственно).
+\end{enumerate}
+
+
+
+\end{document}
